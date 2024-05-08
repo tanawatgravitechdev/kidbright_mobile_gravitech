@@ -4,18 +4,19 @@ const SwitchBar = ({pressed}) => {
   const style = StyleSheet.create({
     container: {
       backgroundColor: '#c5c0c0',
-      width: 100,
-      height: 100,
+      width: 50,
+      height: 50,
       borderRadius: 10,
-      margin: 20,
+      margin: 10,
       zIndex: 99,
+      position: 'relative'
     },
     dot: {
       width: 10,
       height: 10,
       backgroundColor: '#252424',
       borderRadius: 10,
-      margin: 10,
+      margin: 5,
       shadowColor: '#000000',
       shadowOpacity: 1,
       shadowRadius: 1,
@@ -26,12 +27,12 @@ const SwitchBar = ({pressed}) => {
       elevation: 5,
     },
     button: {
-      width: '60%',
-      height: '60%',
+      width: '50%',
+      height: '50%',
       position: 'absolute',
       backgroundColor: '#000000',
-      marginLeft: '20%',
-      marginTop: '20%',
+      marginLeft: '25%',
+      marginTop: '25%',
       borderRadius: 90,
       shadowColor: '#97b1a5',
       shadowOffset: {

@@ -1,11 +1,26 @@
-import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import SwitchBar from '../components/SwitchBar';
 import {useEffect, useState} from 'react';
 import MQTT from 'sp-react-native-mqtt';
-import Display from '../components/Display';
-
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
 const Main = () => {
   const [clientRef, setClientRef] = useState(null);
+  const [data, setData] = useState([0, 0, 0, 0, 0, 0]);
+
   useEffect(() => {
     MQTT.createClient({
       uri: 'ws://broker.emqx.io:1883',
@@ -49,10 +64,39 @@ const Main = () => {
           marginBottom: 20,
         }}
       />
-      <Text>a</Text>
-      
-      <Text>a</Text>
-      <View>
+
+      <LineChart
+        data={{
+          labels: ['a', 'b', 'c', 'd', 'e', 'f'],
+          datasets: [
+            {
+              data: data,
+            },
+          ],
+        }}
+        width={
+          Dimensions.get('window').width -
+          (Dimensions.get('window').width * 1) / 100
+        }
+        height={220}
+        yAxisInterval={10}
+        chartConfig={{
+          backgroundColor: '#054541',
+          backgroundGradientFrom: '#ec0854',
+          backgroundGradientTo: '#e0e410',
+          color: (opacity = 1) => `rgba(255,255,255,${opacity})`,
+        }}
+        bezier
+        style={{
+          margin: 10,
+          borderRadius: 15,
+        }}
+      />
+
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
         <Pressable
           onPress={() => {
             MQTT.createClient({
@@ -79,7 +123,23 @@ const Main = () => {
           }}>
           {({pressed}) => <SwitchBar pressed={pressed} />}
         </Pressable>
-        <Pressable>{({pressed}) => <SwitchBar pressed={pressed} />}</Pressable>
+        <Pressable
+          onPress={() => {
+            setData([
+              Math.random() * 100,
+              Math.random() * 100,
+              Math.random() * 100,
+              Math.random() * 100,
+              Math.random() * 100,
+              Math.random() * 100,
+            ]);
+          }}
+          style={{
+            position: 'absolute',
+            right: 0,
+          }}>
+          {({pressed}) => <SwitchBar pressed={pressed} />}
+        </Pressable>
       </View>
     </SafeAreaView>
   );

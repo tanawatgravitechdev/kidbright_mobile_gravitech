@@ -1,4 +1,5 @@
 import {StyleSheet, View} from 'react-native';
+import {Text} from 'react-native-svg';
 
 const SwitchBar = ({pressed}) => {
   const style = StyleSheet.create({
@@ -9,7 +10,7 @@ const SwitchBar = ({pressed}) => {
       borderRadius: 10,
       margin: 10,
       zIndex: 99,
-      position: 'relative'
+      position: 'relative',
     },
     dot: {
       width: 10,
@@ -45,39 +46,39 @@ const SwitchBar = ({pressed}) => {
     },
   });
   return (
-    <View style={style.container}>
-      <View style={[style.dot]}></View>
-      <View
-        style={[
-          style.dot,
-          {
-            position: 'absolute',
-            right: 0,
-          },
-        ]}></View>
-      <View
-        style={[
-          style.dot,
-          {
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
-          },
-        ]}></View>
-      <View
-        style={[
-          style.dot,
-          {
-            position: 'absolute',
-            bottom: 0,
-          },
-        ]}></View>
-      <View
-        style={[
-          {transform: pressed ? 'scale(.9)' : 'scale(1)', zIndex: 199},
-          style.button,
-        ]}></View>
-    </View>
+      <View style={style.container}>
+        <View style={[style.dot]}></View>
+        <View
+          style={[
+            style.dot,
+            {
+              position: 'absolute',
+              right: 0,
+            },
+          ]}></View>
+        <View
+          style={[
+            style.dot,
+            {
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+            },
+          ]}></View>
+        <View
+          style={[
+            style.dot,
+            {
+              position: 'absolute',
+              bottom: 0,
+            },
+          ]}></View>
+        <View
+          style={[
+            {transform: pressed ? 'scale(.9)' : 'scale(1)', zIndex: 199},
+            style.button,
+          ]}></View>
+      </View>
   );
 };
 

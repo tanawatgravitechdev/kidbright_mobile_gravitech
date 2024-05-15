@@ -9,18 +9,25 @@ import {
 import SwitchBar from '../components/SwitchBar';
 import {useEffect, useState} from 'react';
 import MQTT from 'sp-react-native-mqtt';
+import {LineChart} from 'react-native-chart-kit';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
-const Main = () => {
-  const [clientRef, setClientRef] = useState(null);
-  const [data, setData] = useState([0, 0, 0, 0, 0, 0]);
+  faBars,
+  faCloudSun,
+  faExpand,
+  faHammer,
+  faMicrochip,
+  faTemperature0,
+} from '@fortawesome/free-solid-svg-icons';
+import Chart from '../components/Chart';
+import BoxComponent from '../components/BoxComponent';
+import LinearGradient from 'react-native-linear-gradient';
+import HeaderComponent from '../components/HeaderComponent';
+import {useSelector} from 'react-redux';
 
+const Main = () => {
+  const [data, setData] = useState([0, 0, 0, 0, 0, 0]);
+  const broker = useSelector(state => state.config.broker);
   useEffect(() => {
     MQTT.createClient({
       uri: 'ws://broker.emqx.io:1883',
@@ -54,44 +61,53 @@ const Main = () => {
   });
   return (
     <SafeAreaView>
-      <Image
-        source={require('./../assets/images/banner.png')}
+      <HeaderComponent />
+      <Text>{broker}</Text>
+      <View
         style={{
-          width: 300,
-          height: 100,
-          margin: 'auto',
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-      />
+          width: '100%',
+          height: 50,
+          marginBottom: 10,
+        }}>
+        <LinearGradient
+          colors={['rgba(177, 175, 56, 1)', 'rgba(185, 196, 31, 1)']}
+          style={{
+            width: '90%',
+            height: 40,
+            margin: 'auto',
+            padding: '2%',
+            borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#FFFFFF',
+            }}>
+            Kidbright Board
+          </Text>
+        </LinearGradient>
+      </View>
 
-      <LineChart
-        data={{
-          labels: ['a', 'b', 'c', 'd', 'e', 'f'],
-          datasets: [
-            {
-              data: data,
-            },
-          ],
-        }}
-        width={
-          Dimensions.get('window').width -
-          (Dimensions.get('window').width * 1) / 100
-        }
-        height={220}
-        yAxisInterval={10}
-        chartConfig={{
-          backgroundColor: '#054541',
-          backgroundGradientFrom: '#ec0854',
-          backgroundGradientTo: '#e0e410',
-          color: (opacity = 1) => `rgba(255,255,255,${opacity})`,
-        }}
-        bezier
+      <View
         style={{
-          margin: 10,
-          borderRadius: 15,
-        }}
-      />
+          flexDirection: 'row',
+        }}>
+        <BoxComponent
+          title={'Light Sensor'}
+          icon={faCloudSun}
+          keyTopic={'test_a'}
+          colors={['rgba(247, 243, 243, 1)', 'rgba(224, 215, 215, 1)']}
+        />
+        <BoxComponent
+          title={'Temperature Sensor'}
+          icon={faTemperature0}
+          keyTopic={'temp'}
+          colors={['rgba(247, 243, 243, 1)', 'rgba(224, 215, 215, 1)']}
+        />
+      </View>
+      <Chart />
 
       <View
         style={{

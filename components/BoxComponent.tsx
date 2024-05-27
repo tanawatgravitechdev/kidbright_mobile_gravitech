@@ -4,12 +4,16 @@ import {useEffect, useState} from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {ProgressChart} from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 import MQTT from 'sp-react-native-mqtt';
 
 const BoxComponent = props => {
   const [dataValue, setDataValue] = useState([0]);
+  const temperature = useSelector(state => state.series.temp);
+  const light = useSelector(state => state.series.light);
 
   useEffect(() => {
+    /*
     MQTT.createClient({
       uri: 'ws://broker.emqx.io:1883',
     }).then(function (client) {
@@ -26,10 +30,11 @@ const BoxComponent = props => {
 
       client.connect();
     });
+    */
   }, []);
 
   useEffect(() => {
-    console.log(dataValue);
+    console.log('34:', dataValue);
   }, [dataValue]);
   return (
     <>
@@ -53,11 +58,22 @@ const BoxComponent = props => {
             shadowOpacity: 0.8,
             shadowOffset: {
               width: 10,
-              height: 50,
+              height: 10,
             },
             elevation: 3,
           }}>
-          {props.title}
+          {props.title}&nbsp;
+        </Text>
+        <Text
+          style={{
+            position: 'absolute',
+            left: '45%',
+            top: 23,
+            fontWeight: 'bold',
+          }}>
+          {props.title == 'Temperature Sensor'
+            ? parseInt(temperature)
+            : parseInt(light)}
         </Text>
         <FontAwesomeIcon
           icon={props.icon}
@@ -71,7 +87,11 @@ const BoxComponent = props => {
         <ProgressChart
           data={{
             labels: ['a'],
-            data: dataValue,
+            data: [
+              props.title == 'Temperature Sensor'
+                ? temperature / 100
+                : light / 100,
+            ],
           }}
           width={Dimensions.get('window').width}
           height={220}
@@ -79,8 +99,8 @@ const BoxComponent = props => {
           chartConfig={{
             backgroundGradientFromOpacity: 0,
             backgroundGradientToOpacity: 0,
-            backgroundColor: '#e91313',
-            color: (opacity = 1) => `rgba(241, 187, 38, 0.678)`,
+            backgroundColor: '#251d1d',
+            color: (opacity = 1) => `rgba(124, 95, 15, 0.678)`,
           }}
           style={{
             left: -60,

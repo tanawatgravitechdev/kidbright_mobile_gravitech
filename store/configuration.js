@@ -1,6 +1,7 @@
 const initial = {
-    broker: 'aaa',
+    broker: 'none',
     port: 0,
+    clientConnect: null,
 }
 
 const mqttSetting = (state = initial, action) => {
@@ -14,6 +15,11 @@ const mqttSetting = (state = initial, action) => {
             return {
                 ...state,
                 port: action.payload
+            }
+        case 'set_client_connect':
+            return {
+                ...state,
+                clientConnect: action.payload
             }
         default:
             return state;

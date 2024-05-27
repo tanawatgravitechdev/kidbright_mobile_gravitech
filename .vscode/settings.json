@@ -5,6 +5,12 @@
             "host": "broker.emqx.io",
             "port": 1883,
             "clientId": "vsmqtt_client_0531"
+        },
+        {
+            "name": "hivemq",
+            "host": "broker.hivemq.com",
+            "port": 1883,
+            "clientId": "vsmqtt_client_9f67"
         }
     ]
 }

@@ -2,6 +2,8 @@ import {
   faBars,
   faExpand,
   faHammer,
+  faInfo,
+  faInfoCircle,
   faMicrochip,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -51,7 +53,7 @@ const HeaderComponent = () => {
             top: 10,
             position: 'absolute',
           }}>
-          <FontAwesomeIcon icon={faExpand} />
+          <FontAwesomeIcon icon={faInfoCircle} color='#534d4d'/>
         </Pressable>
       </View>
       <FontAwesomeIcon
@@ -78,8 +80,8 @@ const HeaderComponent = () => {
       <Image
         source={require('./../assets/images/banner.png')}
         style={{
-          width: 200,
-          height: 80,
+          width: 160,
+          height: 40,
           margin: 'auto',
           marginTop: 0,
           marginBottom: 20,

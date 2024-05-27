@@ -3,20 +3,27 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {
-    Alert,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Setting = () => {
   const navigation = useNavigation();
   const [broker, setBroker] = useState('');
+  const [port, setPort] = useState('');
+  const [client, setClient] = useState('');
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+
   const dispatch = useDispatch();
 
   const style = StyleSheet.create({
@@ -37,9 +44,23 @@ const Setting = () => {
     },
   });
 
-  useEffect(()=>{
+  async function loaddata() {
+    const tempBroker = await AsyncStorage.getItem('@gravitech:broker');
+    const tempPort = await AsyncStorage.getItem('@gravitech:port');
+    setBroker(tempBroker);
+    setPort(tempPort);
+  }
+  useEffect(() => {
+    loaddata();
+  }, []);
 
-  },[])
+  const saveData = async () => {
+    await AsyncStorage.setItem('@gravitech:broker', broker);
+    await AsyncStorage.setItem('@gravitech:port', port);
+    dispatch({type: 'set_broker', payload: broker});
+    dispatch({type: 'set_port', payload: parseInt(port)});
+    ToastAndroid.showWithGravity('successful', 1, ToastAndroid.BOTTOM);
+  };
   return (
     <SafeAreaView>
       <View
@@ -116,6 +137,7 @@ const Setting = () => {
               <TextInput
                 editable
                 placeholder="broker.emqx.io"
+                value={broker}
                 onChangeText={text => setBroker(text)}
               />
             </View>
@@ -131,7 +153,12 @@ const Setting = () => {
               <Text style={{fontSize: 11, fontWeight: 'bold'}}>MQTT Port</Text>
             </View>
             <View style={style.textInput}>
-              <TextInput editable placeholder="1883" />
+              <TextInput
+                editable
+                placeholder="1883"
+                onChangeText={text => setPort(text)}
+                value={port}
+              />
             </View>
           </View>
           <View
@@ -179,10 +206,10 @@ const Setting = () => {
             </View>
           </View>
           <View>
-            <TouchableOpacity onPress={() => {
-                Alert.alert(broker);
-                dispatch({type: 'set_broker', payload: broker});
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                saveData();
+              }}>
               <LinearGradient
                 colors={['#8cc014', '#df9a1a']}
                 style={{
